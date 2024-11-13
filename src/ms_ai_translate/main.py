@@ -10,9 +10,9 @@ translator = pipeline("translation", model=model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 def translate_text(text, target_language):
+    translator = pipeline("translation", model="facebook/m2m100_418M")
     source_language = detect(text)
-    forced_bos_token_id = tokenizer.lang_code_to_id[target_language]
-    result = translator(text, forced_bos_token_id=forced_bos_token_id, max_length=255)
+    result = translator(text, src_lang=source_language, tgt_lang=target_language, max_length=255)
     return result[0]['translation_text']
 
 class Request(BaseModel):
